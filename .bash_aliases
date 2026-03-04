@@ -1,1 +1,1 @@
-alias mycompile='$HOME/ysyx_shell/my_compile.sh'
+/home/blossilver/.bash_aliases
