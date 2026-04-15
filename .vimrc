@@ -1,54 +1,58 @@
 " ============================
 " 基础设置
 " ============================
-set nocompatible            " 关闭兼容模式，使用 Vim 的增强功能
-filetype plugin indent on   " 自动识别文件类型并加载对应插件和缩进
-syntax on                   " 开启语法高亮
-set encoding=utf-8          " 文件编码
+set nocompatible                  " 关闭 Vi 兼容模式
+filetype plugin indent on         " 自动文件类型、插件和缩进
+syntax on                         " 语法高亮
+set encoding=utf-8
+
+set shortmess+=I                  " 禁用启动欢迎界面
+set hidden                        " 允许隐藏未保存 buffer
 set backspace=indent,eol,start
 
 " ============================
 " 界面设置
 " ============================
-set number                  " 显示行号
-set cursorline              " 高亮当前行
-set showmatch               " 高亮匹配括号
-set ruler                   " 显示光标位置
-set laststatus=2            " 总是显示状态栏
-set showcmd                 " 显示命令
-set wildmenu                " 命令行补全增强
-set lazyredraw              " 绘制优化
+set number                        " 行号
+" set relativenumber                " 相对行号
+set cursorline                    " 当前行高亮
+set ruler                         " 显示光标位置
+set laststatus=2                  " 总是显示状态栏
+set showcmd                       " 显示命令
+set wildmenu                      " 命令补全菜单
+set lazyredraw                    " 重绘优化
+set showmatch                     " 匹配括号高亮
+set signcolumn=yes                " 始终显示 sign 列
+set showtabline=2                 " 始终显示 tab 栏
 
 " ============================
 " 搜索设置
 " ============================
-set ignorecase              " 搜索不区分大小写
-set smartcase               " 如果包含大写则区分大小写
-set incsearch               " 边输入边搜索
-set hlsearch                " 高亮搜索结果
+set ignorecase                    " 默认忽略大小写
+set smartcase                     " 包含大写时区分大小写
+set incsearch                     " 实时搜索
+set hlsearch                      " 高亮搜索结果
 
 " ============================
-" 缩进和制表符
+" 缩进
 " ============================
-set tabstop=4               " 一个 Tab 占 4 个空格
-set shiftwidth=4            " >> << 操作移动 4 个空格
-set expandtab               " Tab 转为空格
-set autoindent              " 自动缩进
-set smartindent             " 智能缩进
+set tabstop=4
+set shiftwidth=4
 set softtabstop=4
+set expandtab
+set autoindent
+set smartindent
 
 " ============================
 " 剪贴板
 " ============================
-set clipboard=unnamedplus   " 使用系统剪贴板
+set clipboard=unnamedplus
 
 " ============================
-" 视觉效果
+" 视觉
 " ============================
-colorscheme desert          " 主题，可改为自己喜欢的，比如: 'gruvbox', 'molokai'
-set background=dark         " 背景深色
-set showtabline=2           " 总是显示标签栏
-set signcolumn=yes          " 始终显示符号列（方便 lint 或 git）
+set background=dark
+colorscheme desert
 
 " ============================
 " 状态栏
@@ -56,21 +60,51 @@ set signcolumn=yes          " 始终显示符号列（方便 lint 或 git）
 set statusline=%f\ %y\ %m\ %r\ %=Line:%l/%L\ Col:%c
 
 " ============================
-" 快捷键
+" 鼠标
 " ============================
-" 保存/退出
+set mouse+=a
+
+" ============================
+" 常用快捷键
+" ============================
+
+" 快速退出 insert
+inoremap jj <Esc>
+
+" 保存 / 退出
 nnoremap <C-s> :w<CR>
 nnoremap <C-q> :q<CR>
 
-" 窗口操作
+" 窗口移动
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
-" 复制粘贴
+" 系统剪贴板复制
 vnoremap <C-c> "+y
 nnoremap <C-v> "+p
 
+" ============================
+" 防止坏习惯（Missing Semester 推荐）
+" ============================
 
+" 禁用 Ex 模式
+" nmap Q <Nop>
 
+" 禁用方向键（normal mode）
+" nnoremap <Left>  :echoe "Use h"<CR>
+" nnoremap <Right> :echoe "Use l"<CR>
+" nnoremap <Up>    :echoe "Use k"<CR>
+" nnoremap <Down>  :echoe "Use j"<CR>
+
+" insert mode
+" inoremap <Left>  <ESC>:echoe "Use h"<CR>
+" inoremap <Right> <ESC>:echoe "Use l"<CR>
+" inoremap <Up>    <ESC>:echoe "Use k"<CR>
+" inoremap <Down>  <ESC>:echoe "Use j"<CR>
+
+" ============================
+" 关闭提示音
+" ============================
+set noerrorbells visualbell t_vb=

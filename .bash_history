@@ -1998,3 +1998,28 @@ tmux kill-session
 exit
 tldr man
 exit
+gnome --version
+echo $XDG_CURRENT_DESKTOP 
+echo $XDG_DATA_DIRS 
+gedit .tmux
+gedit .tmux.conf 
+code .tmux.conf 
+code .bashr
+code .bashrc 
+tmux
+tmux attach
+tmux
+tmux attach
+tldr tmux
+tmux list-sessions
+tlde tmux attach 
+tldr tmux attach 
+tmux attach -t 1
+tmux attach -t 0
+tmux 
+tmux list-sessions
+tmux kill-session -t 1
+tmux list-sessions
+tmux attach -t 0
+tmux list-sessions
+tmux attach

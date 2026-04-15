@@ -118,6 +118,7 @@ fi
 
 export TLDR_LANGUAGE=zh
 export PATH="$HOME/.local/bin:$PATH"
+# export PATH="$HOME=~/anaconda3/bin:$PATH"  # commented out by conda initialize
 if [ -n "$TMUX" ]; then
   PS1='\[\e[1;32m\]\u@\h\[\e[0m\]:\[\e[1;36m\]\w\[\e[0m\]\$ '
 fi
@@ -156,3 +157,21 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 eval "$(fasd --init auto)"
+
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/blossilver/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/blossilver/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/blossilver/anaconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/blossilver/anaconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
+
