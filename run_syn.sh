@@ -3,61 +3,59 @@
 set -e
 
 usage() {
-    echo "Usage: $0 <DESIGN> <RTL_FILES> [OUTPUT_PATH]"
-
+    echo "Usage: $0 <DESIGN_PATH> [OUTPUT_PATH]"
+    echo "DESIGN_PATH: The relative path to the top.v file"
+    echo "[OUTPUT_PATH]: Optional output directory (default: current directory)"
 }
 
-# =========================
-# 默认参数
-# =========================
-O=${O:-"$PWD"}
-DESIGN=""
-RTL_FILES=""
 
-# =========================
-# 参数解析
-# =========================
-if [[ $# -lt 2 ]]; then
-    echo "DESIGN and RTL_FILES are required"
+O=${O:-"$PWD"}
+DESIGN_PATH=""
+
+
+if [[ $# -lt 1 ]]; then
+    echo "DESIGN_PATH is required"
     usage
     exit 1
 fi
 
-if [[ $# -gt 3 ]]; then
+if [[ $# -gt 2 ]]; then
     echo "Too many arguments"
     usage
     exit 1
 fi
 
-DESIGN="$1"
-RTL_FILES="$2"
-RTL_FILES=$(realpath "$RTL_FILES")
-if [[ -n "${3:-}" ]]; then
-    O="$3"
+DESIGN_PATH="$1"
+
+if [[ -n "${2:-}" ]]; then
+    O="$2"
 fi
 
-# =========================
-# 检查输入
-# =========================
-if [[ -z "$DESIGN" || -z "$RTL_FILES" ]]; then
-    echo "DESIGN and RTL_FILES could not be empty"
-    usage
+O=$(realpath -m "$O")
+
+if [[ ! -f "$DESIGN_PATH" ]]; then
+    echo "Error: DESIGN_PATH '$DESIGN_PATH' does not exist or is not a file"
     exit 1
 fi
 
-# =========================
-# 打印配置
-# =========================
+DESIGN_PATH=$(realpath "$DESIGN_PATH")
+
+DESIGN=$(basename "$DESIGN_PATH" .v)
+
+RTL_DIR=$(dirname "$DESIGN_PATH")
+
+RTL_FILES=$(find "$RTL_DIR" -type f -name "*.v" -not -name "*_tb.v" | sort | tr '\n' ' ')
+
 echo "================ SYN CONFIG ================"
-echo "DESIGN    = $DESIGN"
-echo "OUTPUT    = $O"
-echo "RTL_FILES = $RTL_FILES"
+echo "DESIGN      = $DESIGN"
+echo "DESIGN_PATH  = $DESIGN_PATH"
+echo "RTL_DIR     = $RTL_DIR"
+echo "OUTPUT      = $O"
+echo "RTL_FILES   = $RTL_FILES"
 echo "==========================================="
 
-# =========================
-# 运行 synthesis
-# =========================
+
 make -C "$HOME"/yosys-sta syn \
     DESIGN="$DESIGN" \
     O="$O" \
-    RTL_FILES="$RTL_FILES"
+    RTL_FILES="$RTL_FILES" -B
