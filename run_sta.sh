@@ -3,11 +3,11 @@
 set -e
 
 usage() {
-    echo "Usage: $0 <DESIGN_PATH> [OUTPUT_PATH] [CLK_FREQ] [CLK_PORT_NAME]"
+    echo "Usage: $0 <DESIGN_PATH> [CLK_FREQ] [CLK_PORT_NAME] [OUTPUT_PATH] "
     echo "DESIGN_PATH: The relative path to the top.v file"
-    echo "[OUTPUT_PATH]: Optional output directory (default: current directory)"
     echo "[CLK_FREQ]: Optional clock frequency(MHz) (default: 500MHz)"
     echo "[CLK_PORT_NAME]: Optional clock port name (default: clk)"
+    echo "[OUTPUT_PATH]: Optional output directory (default: current directory)"
 }
 
 
@@ -21,7 +21,7 @@ if [[ $# -lt 1 ]]; then
     exit 1
 fi
 
-if [[ $# -gt 2 ]]; then
+if [[ $# -gt 4 ]]; then
     echo "Too many arguments"
     usage
     exit 1
