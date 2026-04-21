@@ -12,3 +12,4 @@ alias pdf2zh='conda activate zotero-pdf2zh-next-venv; python ~/pdf2zh/server/ser
 alias nvboardpin='python3 $NVBOARD_HOME/scripts/auto_pin_bind.py'
 alias yosys-syn='bash $HOME/yosys-sta/run_syn.sh'
 alias yosys-sta='bash $HOME/yosys-sta/run_sta.sh'
+alias xxyun='cd $HOME/xxyun;docker run -it --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $PWD:/app ubuntu:24.04 bash -c "apt update && apt install -y libfuse2 libgl1 libgtk-3-0 libx11-6 libxcb1 && cd /app && ./xxyun.app"'
