@@ -47,7 +47,12 @@ DESIGN=$(basename "$DESIGN_PATH" .v)
 
 RTL_DIR=$(dirname "$DESIGN_PATH")
 
-RTL_FILES=$(find "$RTL_DIR" -type f -name "*.v" -not -name "*_tb.v" -not -path "*/*MHz*/*" "*/obj_dir*/*"| sort | tr '\n' ' ')
+RTL_FILES=$(find "$RTL_DIR" -type f -name "*.v" \
+    -not -name "*_tb.v" \
+    -not -name "*netlist.v" \
+    -not -path "*/obj_dir/*" \
+    -not -path "*/*MHz*/*" \
+    -not -path "*/build/*" | sort | tr '\n' ' ')
 
 echo "================ SYN CONFIG ================"
 echo "DESIGN      = $DESIGN"
