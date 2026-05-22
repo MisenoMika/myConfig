@@ -2,8 +2,8 @@
 
 set -euo pipefail
 
-TOPNAME=${1-"top"}
-WAVEFORM=${2-"--trace-fst"}
+TOPNAME=${1:-"top"}
+WAVEFORM=${2:-"--trace-fst"}
 if [[ "${1:-}" == "clean" ]]; then
 	rm -rf --verbose obj_dir
 	exit 0
@@ -18,8 +18,6 @@ if [[ "${2:-}" == "fst" ]]; then
 	WAVEFORM="--trace-fst"
 elif [[ "${2:-}" == "vcd" ]]; then
 	WAVEFORM="--trace-vcd"
-else
-	exit 0
 fi
 
 
