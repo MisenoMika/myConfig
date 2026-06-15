@@ -16,3 +16,5 @@ rsync -a --delete \
 #rsync -a --delete \
 #  ~/.cache/nvim \
 #  ~/myConfig/dotfiles/.cache/nvim
+pacman -Qqe >~/myConfig/pkglist.txt
+pacman -Qqm >~/myConfig/aurlist.txt

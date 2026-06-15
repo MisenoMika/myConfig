@@ -30,6 +30,7 @@ btop
 calligra
 cantor
 colord-kde
+cowsay
 discover
 docker
 docker-compose
@@ -52,6 +53,7 @@ ffmpegthumbs
 filelight
 flatpak-kcm
 francis
+fzf
 gedit
 ghostwriter
 git
@@ -59,6 +61,7 @@ google-chrome
 granatier
 grantlee-editor
 grub
+gtkwave
 gwenview
 htop
 intel-ucode
@@ -214,10 +217,14 @@ layer-shell-qt
 libkscreen
 libksysguard
 libplasma
+libreoffice-fresh
+libreoffice-fresh-zh-cn
 linux
 linux-firmware
 linuxqq
 lokalize
+lolcat
+lsd
 lskat
 man-db
 man-pages
@@ -249,6 +256,7 @@ partitionmanager
 picmi
 pim-data-exporter
 pim-sieve-editor
+pkgfile
 plasma-activities
 plasma-activities-stats
 plasma-browser-integration
@@ -277,9 +285,12 @@ poxml
 print-manager
 qqc2-breeze-style
 qrca
+riscv64-linux-gnu-gcc
 rocs
 sddm
 sddm-kcm
+sdl2_image
+sdl2_ttf
 signon-kwallet-extension
 skanlite
 skanpage
@@ -302,8 +313,10 @@ tokodon
 ttf-jetbrains-mono-nerd
 umbrello
 unzip
+usbutils
 uv
 v2rayn-bin
+verilator
 vim
 visual-studio-code-bin
 wacomtablet
