@@ -4,7 +4,12 @@ set -e
 rsync -a --delete \
   ~/.config/nvim \
   ~/myConfig/dotfiles/.config/
-
+rsync -a --delete \
+  ~/.bashrc \
+  ~/myConfig/dotfiles/Arch/
+rsync -a --delete \
+  ~/.bash_profile \
+  ~/myConfig/dotfiles/Arch/
 #rsync -a --delete \
 #  ~/.local/share/nvim \
 #  ~/myConfig/dotfiles/.local/share/nvim
