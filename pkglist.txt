@@ -57,6 +57,7 @@ fzf
 gedit
 ghostwriter
 git
+go
 google-chrome
 granatier
 grantlee-editor
@@ -64,6 +65,7 @@ grub
 gtkwave
 gwenview
 htop
+hugo
 intel-ucode
 isoimagewriter
 itinerary
