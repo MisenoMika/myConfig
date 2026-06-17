@@ -6,10 +6,10 @@ rsync -a --delete \
   ~/myConfig/dotfiles/.config/
 rsync -a --delete \
   ~/.bashrc \
-  ~/myConfig/dotfiles/Arch/
+  ~/myConfig/dotfiles/Arch/Arch
 rsync -a --delete \
   ~/.bash_profile \
-  ~/myConfig/dotfiles/Arch/
+  ~/myConfig/dotfiles/Arch/Arch
 #rsync -a --delete \
 #  ~/.local/share/nvim \
 #  ~/myConfig/dotfiles/.local/share/nvim
