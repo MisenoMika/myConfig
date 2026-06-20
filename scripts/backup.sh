@@ -13,9 +13,9 @@ rsync -a --delete \
 rsync -a --delete \
   ~/.config/starship.toml ~/myConfig/dotfiles/Arch/Arch
 rsync -a --delete \
-  ~/.config/kitty/ ~/myConfig/dotfiles/Arch/Arch
+  ~/.config/kitty ~/myConfig/dotfiles/Arch/Arch
 rsync -a --delete \
-  ~/.config/btop/ ~/myConfig/dotfiles/Arch/Arch
+  ~/.config/btop ~/myConfig/dotfiles/Arch/Arch
 
 #rsync -a --delete \
 #  ~/.local/share/nvim \
