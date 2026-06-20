@@ -69,6 +69,7 @@ gwenview
 htop
 hugo
 hyprland
+hyprlauncher
 intel-ucode
 isoimagewriter
 itinerary

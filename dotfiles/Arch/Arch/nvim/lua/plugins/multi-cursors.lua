@@ -11,7 +11,7 @@ return {
       { "<C-Down>", "<Cmd>MultipleCursorsAddDown<CR>", mode = { "n", "i", "x" }, desc = "Add cursor and move down" },
 
       {
-        "<C-LeftMouse>",
+        "<C-RightMouse>",
         "<Cmd>MultipleCursorsMouseAddDelete<CR>",
         mode = { "n", "i" },
         desc = "Add or remove cursor on mouse click",
