@@ -16,6 +16,8 @@ rsync -a --delete \
   ~/.config/kitty ~/myConfig/dotfiles/Arch/Arch
 rsync -a --delete \
   ~/.config/btop ~/myConfig/dotfiles/Arch/Arch
+rsync -a --delete \
+  ~/.config/hypr ~/myConfig/dotfiles/Arch/Arch
 
 #rsync -a --delete \
 #  ~/.local/share/nvim \
