@@ -14,6 +14,7 @@ audex
 audiocd-kio
 audiotube
 aurorae
+awww
 base
 base-devel
 bash-completion
@@ -30,6 +31,8 @@ breeze-plymouth
 btop
 calligra
 cantor
+cava
+chafa
 colord-kde
 cowsay
 discover
@@ -60,6 +63,7 @@ gedit
 ghostwriter
 git
 go
+go-musicfox-bin
 google-chrome
 granatier
 grantlee-editor
