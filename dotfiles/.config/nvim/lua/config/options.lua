@@ -9,3 +9,17 @@
 vim.opt.number = true
 vim.opt.relativenumber = false
 vim.opt.guicursor = "n-v-c:block,i-ci-ve:ver25,r-cr:hor20"
+
+local groups = {
+  "NormalFloat",
+  "FloatBorder",
+  "FloatTitle",
+  "FlashBackdrop",
+  "FlashMatch",
+  "FlashCurrent",
+  "FlashLabel",
+}
+
+for _, g in ipairs(groups) do
+  vim.api.nvim_set_hl(0, g, { bg = "none" })
+end

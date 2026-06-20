@@ -17,6 +17,7 @@ aurorae
 base
 base-devel
 bash-completion
+bat
 bear
 blinken
 bluedevil
@@ -49,6 +50,7 @@ fcitx5-configtool
 fcitx5-gtk
 fcitx5-qt
 fd
+feishu-bin
 ffmpegthumbs
 filelight
 flatpak-kcm
@@ -66,6 +68,7 @@ gtkwave
 gwenview
 htop
 hugo
+hyprland
 intel-ucode
 isoimagewriter
 itinerary
@@ -146,6 +149,7 @@ kio-zeroconf
 kirigami-gallery
 kiriki
 kiten
+kitty
 kjournald
 kjumpingcube
 kleopatra
@@ -245,6 +249,7 @@ nmap
 nodejs
 noto-fonts-cjk
 npm
+obs-studio
 ocean-sound-theme
 okular
 openssh
@@ -300,6 +305,7 @@ skladnik
 sl
 spectacle
 sshfs
+starship
 step
 sudo
 svgpart
@@ -324,6 +330,8 @@ visual-studio-code-bin
 wacomtablet
 wechat-bin
 wget
+wl-clipboard
+xclip
 xdg-desktop-portal-kde
 xf86-video-vesa
 xorg-bdftopcf
@@ -368,4 +376,5 @@ xorg-xwud
 yakuake
 yay-bin
 yay-bin-debug
+yazi
 zanshin

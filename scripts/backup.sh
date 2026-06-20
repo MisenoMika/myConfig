@@ -10,6 +10,13 @@ rsync -a --delete \
 rsync -a --delete \
   ~/.bash_profile \
   ~/myConfig/dotfiles/Arch/Arch
+rsync -a --delete \
+  ~/.config/starship.toml ~/myConfig/dotfiles/Arch/Arch
+rsync -a --delete \
+  ~/.config/kitty/ ~/myConfig/dotfiles/Arch/Arch
+rsync -a --delete \
+  ~/.config/btop/ ~/myConfig/dotfiles/Arch/Arch
+
 #rsync -a --delete \
 #  ~/.local/share/nvim \
 #  ~/myConfig/dotfiles/.local/share/nvim
