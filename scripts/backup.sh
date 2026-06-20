@@ -3,7 +3,7 @@ set -e
 
 rsync -a --delete \
   ~/.config/nvim \
-  ~/myConfig/dotfiles/.config/
+  ~/myConfig/dotfiles/Arch/Arch
 rsync -a --delete \
   ~/.bashrc \
   ~/myConfig/dotfiles/Arch/Arch
