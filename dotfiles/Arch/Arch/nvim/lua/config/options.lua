@@ -23,3 +23,6 @@ local groups = {
 for _, g in ipairs(groups) do
   vim.api.nvim_set_hl(0, g, { bg = "none" })
 end
+vim.opt.tabstop = 4 -- Tab 在编辑器中显示的宽度
+vim.opt.shiftwidth = 4 -- 自动缩进 (如 >>) 使用的宽度
+vim.opt.softtabstop = 4 -- 退格键删除的空格数
