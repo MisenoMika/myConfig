@@ -222,10 +222,12 @@ kwave
 kwayland
 kweather
 kwin
+kwin-effect-rounded-corners-git
 kwin-x11
 kwordquiz
 kwrited
 layer-shell-qt
+lazygit
 libkscreen
 libksysguard
 libplasma
@@ -234,11 +236,11 @@ libreoffice-fresh-zh-cn
 linux
 linux-firmware
 linuxqq
+localsend-bin
 lokalize
 lolcat
 lsd
 lskat
-mako
 man-db
 man-pages
 marble
@@ -337,6 +339,7 @@ v2rayn-bin
 verilator
 vim
 visual-studio-code-bin
+vulkan-headers
 wacomtablet
 wechat-bin
 wget
@@ -389,3 +392,4 @@ yay-bin
 yay-bin-debug
 yazi
 zanshin
+zsh

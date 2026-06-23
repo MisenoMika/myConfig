@@ -1,23 +1,39 @@
 #! /usr/bin/env bash
 set -e
+# nvim
+rsync -a --delete \
+    ~/.config/nvim \
+    ~/myConfig/dotfiles/Arch/Arch
+# bash profiles
+rsync -a --delete \
+    ~/.bashrc \
+    ~/myConfig/dotfiles/Arch/Arch
+# zsh profiles
+rsync -a --delete \
+    ~/.zshrc \
+    ~/myConfig/dotfiles/Arch/Arch
 
 rsync -a --delete \
-  ~/.config/nvim \
-  ~/myConfig/dotfiles/Arch/Arch
+    ~/.oh-my-zsh \
+    ~/myConfig/dotfiles/Arch/Arch
+# general shell profiles
 rsync -a --delete \
-  ~/.bashrc \
-  ~/myConfig/dotfiles/Arch/Arch
+    ~/.bash_profile \
+    ~/myConfig/dotfiles/Arch/Arch
 rsync -a --delete \
-  ~/.bash_profile \
-  ~/myConfig/dotfiles/Arch/Arch
+    ~/.aliases ~/myConfig/dotfiles/Arch/Arch
+# starship
 rsync -a --delete \
-  ~/.config/starship.toml ~/myConfig/dotfiles/Arch/Arch
+    ~/.config/starship.toml ~/myConfig/dotfiles/Arch/Arch
+# kitty
 rsync -a --delete \
-  ~/.config/kitty ~/myConfig/dotfiles/Arch/Arch
+    ~/.config/kitty ~/myConfig/dotfiles/Arch/Arch
+# btop
 rsync -a --delete \
-  ~/.config/btop ~/myConfig/dotfiles/Arch/Arch
+    ~/.config/btop ~/myConfig/dotfiles/Arch/Arch
+# hyprland
 rsync -a --delete \
-  ~/.config/hypr ~/myConfig/dotfiles/Arch/Arch
+    ~/.config/hypr ~/myConfig/dotfiles/Arch/Arch
 
 #rsync -a --delete \
 #  ~/.local/share/nvim \
