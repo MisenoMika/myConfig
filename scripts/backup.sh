@@ -47,7 +47,7 @@ rsync -a --delete \
 #  ~/.cache/nvim \
 #  ~/myConfig/dotfiles/.cache/nvim
 pacman -Qqe >~/myConfig/pkglist.txt
-pacman -Qqm >~/myConfig/aurlist.txt
+pacman -Qqm >~/myConfig/aurlist.txt
 git add .
 git commit -m "auto backup: $(date +%Y-%m-%d-%H-%M-%S)"
 git push origin master
