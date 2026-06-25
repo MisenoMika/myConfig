@@ -11,12 +11,19 @@ export ZSH="$HOME/.oh-my-zsh"
 # Source ~/.aliases if it exists and is readable
 if [ -r "$HOME/.aliases" ]; then
   source "$HOME/.aliases"
+else
+  # ~/.aliases not found or not readable; no aliases loaded
+  :
 fi
 
-# Source ~/.exports if it existsj and is readable
+# Source ~/.exports if it exists and is readable
 if [ -r "$HOME/.exports" ]; then
   source "$HOME/.exports"
+else
+  # ~/.exports not found or not readable; no exports loaded
+  :
 fi
+
 eval "$(fasd --init auto)"
 eval "$(starship init zsh)"
 eval "$(fzf --zsh)"
@@ -127,3 +134,10 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+ 
+alias l='lsd'
+alias ll='lsd -al'
+# if command -v codex >/dev/null 2>&1; then
+#   eval "$(codex completion zsh)"
+# fi
+# 
