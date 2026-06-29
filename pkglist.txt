@@ -258,6 +258,7 @@ nmap
 nodejs
 noto-fonts-cjk
 npm
+nvme-cli
 obs-studio
 ocean-sound-theme
 okular
@@ -318,6 +319,7 @@ sl
 spectacle
 sshfs
 starship
+steam
 step
 sudo
 svgpart
@@ -344,6 +346,7 @@ wacomtablet
 wechat-bin
 wget
 wl-clipboard
+wqy-zenhei
 xclip
 xdg-desktop-portal-hyprland
 xdg-desktop-portal-kde
@@ -389,7 +392,6 @@ xorg-xwininfo
 xorg-xwud
 yakuake
 yay-bin
-yay-bin-debug
 yazi
 zanshin
 zsh
