@@ -21,3 +21,5 @@ alias musicfox-ui='tmux new-session -d 'musicfox' \; split-window -h \; resize-p
 # alias musicfox-ui='kitten @ launch --location=hsplit --cwd=current cava && exec musicfox'
 # alias codex-start='sh ~/.codex/scripts/start-codex.sh'
 alias codex='CODEX_HOME="$CODEX_HOME_DIR" codex' # codex --cd ~/moon-bridge'
+alias hd='hexdump -C'
+alias zotero-translation='cd ~/zotero-pdf2zh/server; uv run --python 3.12 --with-requirements requirements.txt server.py'
