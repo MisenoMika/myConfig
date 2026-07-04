@@ -23,3 +23,4 @@ alias musicfox-ui='tmux new-session -d 'musicfox' \; split-window -h \; resize-p
 alias codex='CODEX_HOME="$CODEX_HOME_DIR" codex' # codex --cd ~/moon-bridge'
 alias hd='hexdump -C'
 alias zotero-translation='cd ~/zotero-pdf2zh/server; uv run --python 3.12 --with-requirements requirements.txt server.py'
+alias hex2bin='sh ~/myConfig/scripts/hex_to_bin.sh'

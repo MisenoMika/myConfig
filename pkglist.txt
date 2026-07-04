@@ -32,6 +32,7 @@ btop
 calligra
 cantor
 cava
+ccache
 chafa
 colord-kde
 cowsay
@@ -80,6 +81,7 @@ hyprlauncher
 intel-ucode
 isoimagewriter
 itinerary
+jdk-openjdk
 juk
 k3b
 kactivitymanagerd
@@ -341,6 +343,7 @@ unzip
 usbutils
 uv
 v2rayn-bin
+valgrind
 verilator
 vim
 visual-studio-code-bin
