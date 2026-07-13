@@ -43,6 +43,7 @@ dolphin
 dolphin-plugins
 dragon
 drkonqi
+dtc
 efibootmgr
 elisa
 falkon
@@ -78,6 +79,7 @@ htop
 hugo
 hyprland
 hyprlauncher
+inotify-tools
 intel-ucode
 isoimagewriter
 itinerary
@@ -322,6 +324,7 @@ skanpage
 skladnik
 sl
 spectacle
+speedtest-cli
 sshfs
 starship
 steam

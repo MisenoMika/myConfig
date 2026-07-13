@@ -16,14 +16,14 @@ export SDL_IM_MODULE=fcitx
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
-  test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-  alias ls='ls --color=auto'
-  #alias dir='dir --color=auto'
-  #alias vdir='vdir --color=auto'
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    #alias dir='dir --color=auto'
+    #alias vdir='vdir --color=auto'
 
-  alias grep='grep --color=auto'
-  alias fgrep='fgrep --color=auto'
-  alias egrep='egrep --color=auto'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
 fi
 
 # colored GCC warnings and errors
@@ -44,7 +44,7 @@ export TLDR_LANGUAGE=zh
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
 if [ -f ~/.bash_aliases ]; then
-  . ~/.bash_aliases
+    . ~/.bash_aliases
 fi
 # ===== 深色终端彩色 man 配置 =====
 # 使用 less 作为 pager，并保留颜色
@@ -70,8 +70,6 @@ export LESS_TERMCAP_vb=$'\e[1;31m'
 # 行宽（可选，适合窄终端）
 export MANWIDTH=80
 
-export NEMU_HOME=/home/blossilver/ysyx-workbench/nemu
-export AM_HOME=/home/blossilver/ysyx-workbench/abstract-machine
 export NVBOARD_HOME=/home/blossilver/ysyx-workbench/nvboard
 
 eval "$(fasd --init auto)"
