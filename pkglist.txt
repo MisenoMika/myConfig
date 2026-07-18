@@ -34,6 +34,7 @@ cantor
 cava
 ccache
 chafa
+cloc
 colord-kde
 cowsay
 discover
@@ -79,6 +80,7 @@ htop
 hugo
 hyprland
 hyprlauncher
+inferno
 inotify-tools
 intel-ucode
 isoimagewriter
@@ -276,6 +278,7 @@ oxygen-sounds
 palapeli
 parley
 partitionmanager
+perf
 picmi
 pim-data-exporter
 pim-sieve-editor
@@ -338,6 +341,7 @@ telly-skout
 texinfo
 timeshift
 tldr
+tlp
 tmux
 tokodon
 ttf-jetbrains-mono-nerd
@@ -359,6 +363,7 @@ wqy-zenhei
 xclip
 xdg-desktop-portal-hyprland
 xdg-desktop-portal-kde
+xdot
 xf86-video-vesa
 xorg-bdftopcf
 xorg-docs
