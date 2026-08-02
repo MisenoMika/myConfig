@@ -142,3 +142,6 @@ alias ll='lsd -al'
 #   eval "$(codex completion zsh)"
 # fi
 # 
+
+# opencode
+export PATH=/home/blossilver/.opencode/bin:$PATH

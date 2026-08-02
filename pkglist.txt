@@ -47,6 +47,7 @@ drkonqi
 dtc
 efibootmgr
 elisa
+ethtool
 falkon
 fasd
 fastfetch
@@ -317,6 +318,7 @@ qt6-wayland
 quickshell
 riscv64-linux-gnu-gcc
 rocs
+scons
 sddm
 sddm-kcm
 sdl2_image
@@ -351,6 +353,7 @@ usbutils
 uv
 v2rayn-bin
 valgrind
+ventoy-bin
 verilator
 vim
 visual-studio-code-bin
