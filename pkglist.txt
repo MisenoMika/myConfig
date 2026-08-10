@@ -335,6 +335,7 @@ starship
 steam
 step
 sudo
+sv2v
 svgpart
 sweeper
 systemsettings

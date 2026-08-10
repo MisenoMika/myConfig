@@ -11,6 +11,8 @@ kwin-effect-rounded-corners-git-debug
 linuxqq
 litehtml0.9
 localsend-bin
+sv2v
+sv2v-debug
 v2rayn-bin
 ventoy-bin
 ventoy-bin-debug
