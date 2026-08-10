@@ -34,6 +34,12 @@ rsync -a --delete \
 # hyprland
 rsync -a --delete \
     ~/.config/hypr ~/myConfig/dotfiles/Arch/Arch
+# run_sta.sh
+rsync -a --delete \
+    ~/yosys-sta/run_sta.sh ~/myConfig/scripts/run_sta.sh
+# run_syn.sh
+rsync -a --delete \
+    ~/yosys-sta/run_syn.sh ~/myConfig/scripts/run_syn.sh
 
 #rsync -a --delete \
 #  ~/.local/share/nvim \
