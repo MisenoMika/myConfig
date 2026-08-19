@@ -87,6 +87,7 @@ intel-ucode
 isoimagewriter
 itinerary
 jdk-openjdk
+jdk17-openjdk
 juk
 k3b
 kactivitymanagerd
@@ -259,6 +260,7 @@ mbox-importer
 merkuro
 milou
 minuet
+mise
 nano
 neochat
 neovim

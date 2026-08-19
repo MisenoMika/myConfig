@@ -145,3 +145,4 @@ alias ll='lsd -al'
 
 # opencode
 export PATH=/home/blossilver/.opencode/bin:$PATH
+eval "$(mise activate zsh)"
