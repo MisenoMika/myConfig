@@ -3,6 +3,11 @@ return {
   lazy = true,
   name = "catppuccin",
   opts = {
+    flavour = "mocha",
+    transparent_background = true,
+    float = {
+      transparent = true,
+    },
     lsp_styles = {
       underlines = {
         errors = { "undercurl" },
