@@ -22,6 +22,8 @@ rsync -a --delete \
     ~/myConfig/dotfiles/Arch/Arch
 rsync -a --delete \
     ~/.aliases ~/myConfig/dotfiles/Arch/Arch
+rsync -a --delete \
+    ~/.exports ~/myConfig/dotfiles/Arch/Arch
 # starship
 rsync -a --delete \
     ~/.config/starship.toml ~/myConfig/dotfiles/Arch/Arch
