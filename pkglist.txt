@@ -1,3 +1,4 @@
+7zip
 accessibility-inspector
 adobe-source-han-sans-cn-fonts
 akonadi-calendar-tools
@@ -19,6 +20,7 @@ base
 base-devel
 bash-completion
 bat
+bc
 bear
 blinken
 bluedevil
@@ -35,6 +37,7 @@ cava
 ccache
 chafa
 cloc
+cmake
 colord-kde
 cowsay
 discover
@@ -72,6 +75,7 @@ gnu-free-fonts
 go
 go-musicfox-bin
 google-chrome
+gperf
 granatier
 grantlee-editor
 grub
@@ -243,6 +247,7 @@ libksysguard
 libplasma
 libreoffice-fresh
 libreoffice-fresh-zh-cn
+libslirp
 linux
 linux-firmware
 linuxqq
@@ -258,10 +263,12 @@ markdownpart
 massif-visualizer
 mbox-importer
 merkuro
+meson
 milou
 minuet
 mise
 nano
+ncurses5-compat-libs
 neochat
 neovim
 networkmanager
@@ -281,6 +288,7 @@ oxygen-sounds
 palapeli
 parley
 partitionmanager
+patchutils
 perf
 picmi
 pim-data-exporter
@@ -318,8 +326,10 @@ qrca
 qt5-wayland
 qt6-wayland
 quickshell
+riscv32-gnu-toolchain-elf-bin
 riscv64-linux-gnu-gcc
 rocs
+rustup
 scons
 sddm
 sddm-kcm
@@ -351,6 +361,7 @@ tmux
 tokodon
 ttf-jetbrains-mono-nerd
 umbrello
+unrar
 unzip
 usbutils
 uv
@@ -363,6 +374,7 @@ visual-studio-code-bin
 vulkan-headers
 wacomtablet
 wechat-bin
+wemeet-bin
 wget
 wl-clipboard
 wqy-zenhei

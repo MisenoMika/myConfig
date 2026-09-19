@@ -22,3 +22,7 @@ _vide() {
 }
 
 complete -F _vide vide
+
+# >>> coursier install directory >>>
+export PATH="$PATH:/home/blossilver/.local/share/coursier/bin"
+# <<< coursier install directory <<<

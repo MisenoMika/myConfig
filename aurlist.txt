@@ -11,6 +11,9 @@ kwin-effect-rounded-corners-git-debug
 linuxqq
 litehtml0.9
 localsend-bin
+ncurses5-compat-libs
+ncurses5-compat-libs-debug
+riscv32-gnu-toolchain-elf-bin
 sv2v
 sv2v-debug
 v2rayn-bin
@@ -18,5 +21,6 @@ ventoy-bin
 ventoy-bin-debug
 visual-studio-code-bin
 wechat-bin
+wemeet-bin
 yay-bin
 yay-bin-debug
