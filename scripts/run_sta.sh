@@ -33,9 +33,17 @@ Options:
   -r, --rtl <DIR>            Root directory recursively scanned for RTL
                              sources (default: the directory of DESIGN_PATH)
   -o, --output <DIR>         Output directory (default: current directory)
+  -k, --keep                 Preserve every cell/wire (YOSYS_KEEP). Needed only
+                             when the top has no primary outputs, otherwise the
+                             netlist is empty. Off by default because it
+                             prevents memory optimization and can make yosys
+                             crash (fsm_extract) on memory-heavy modules.
+  -p, --power                Also run iEDA report_power (off by default; power
+                             analysis can be OOM-killed on large netlists).
   -h, --help                 Show this help and exit
 
-Environment variables (overridden by options): CLK_FREQ_MHZ, CLK_PORT_NAME, O
+Environment variables (overridden by options): CLK_FREQ_MHZ, CLK_PORT_NAME, O,
+YOSYS_KEEP, PWR_REPORT
 
 Designs using SystemVerilog (.sv) are converted to Verilog via sv2v
 (required: https://github.com/zachjs/sv2v) before synthesis, because yosys
@@ -66,6 +74,8 @@ O="${O:-$PWD}"
 DESIGN_PATH=""
 TOP_NAME="${TOP_NAME:-}"
 RTL_ROOT="${RTL_ROOT:-}"
+YOSYS_KEEP="${YOSYS_KEEP:-0}"
+PWR_REPORT="${PWR_REPORT:-0}"
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -119,6 +129,14 @@ while [[ $# -gt 0 ]]; do
         ;;
     --rtl=*)
         RTL_ROOT="${1#*=}"
+        shift
+        ;;
+    -k | --keep)
+        YOSYS_KEEP=1
+        shift
+        ;;
+    -p | --power)
+        PWR_REPORT=1
         shift
         ;;
     -o | --output)
@@ -298,7 +316,13 @@ if ((HAVE_SV)); then
     SV2V_ARGS=(-w "$SV2V_OUT" --top="$DESIGN")
     [[ -d "$RTL_INC" ]] && SV2V_ARGS+=(-I "$RTL_INC")
 
-    mapfile -t SV2V_FILES < <(find "$SV2V_SRC" -type f \( -name '*.v' -o -name '*.sv' \) | sort)
+    # packages first: they hold `define macros that other files may rely on
+    # (sv2v processes files in order, so e.g. npc_pkg.sv's TOURNAMENT_ON must be
+    # seen before tournament.sv).
+    mapfile -t SV2V_FILES < <(
+        find "$SV2V_SRC" -type f -name '*_pkg.sv' | sort
+        find "$SV2V_SRC" -type f \( -name '*.v' -o -name '*.sv' \) ! -name '*_pkg.sv' | sort
+    )
     N_SRC=${#SV2V_FILES[@]}
     sv2v "${SV2V_ARGS[@]}" "${SV2V_FILES[@]}"
     echo "sv2v: converted $N_SRC sources to ${#RTL_FILE_ARRAY[@]} Verilog modules"
@@ -314,6 +338,7 @@ echo "RTL_DIR         = $RTL_DIR"
 echo "RTL_FILES       = $RTL_FILES"
 echo "CLK_FREQ_MHZ    = $CLK_FREQ_MHZ"
 echo "CLK_PORT_NAME   = $CLK_PORT_NAME"
+echo "YOSYS_KEEP      = $YOSYS_KEEP"
 echo "OUTPUT          = $O"
 echo "=================================================="
 
@@ -325,7 +350,8 @@ make -C "$PROJ_DIR" sta \
     CLK_PORT_NAME="$CLK_PORT_NAME" \
     RTL_FILES="$RTL_FILES" \
     RTL_INC="$RTL_INC" \
-    YOSYS_KEEP=1 \
+    YOSYS_KEEP="$YOSYS_KEEP" \
+    PWR_REPORT="$PWR_REPORT" \
     -B
 
 echo
