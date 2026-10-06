@@ -10,9 +10,12 @@ kwin-effect-rounded-corners-git
 kwin-effect-rounded-corners-git-debug
 linuxqq
 litehtml0.9
+litehtml0.9-debug
 localsend-bin
 ncurses5-compat-libs
 ncurses5-compat-libs-debug
+open-orpheus-bin
+open-orpheus-bin-debug
 riscv32-gnu-toolchain-elf-bin
 sv2v
 sv2v-debug

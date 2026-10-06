@@ -10,16 +10,28 @@ DEFAULT_CLK=clk
 usage() {
     cat <<EOF
 Usage: $0 [OPTIONS] <DESIGN_PATH>
+       $0 [OPTIONS] --top <NAME> --rtl <DIR>
 
 Run synthesis and STA for a Verilog design.
 
+Besides the whole top design, you can analyze a single module under rtl/ or
+any existing module that is itself built from several submodules (e.g. 'ifu',
+which contains 'icache'): point --rtl at the root directory that holds all the
+sources and use --top to select which module becomes the synthesis top.
+
 Arguments:
-  DESIGN_PATH                Path to the top.v file, or a directory containing it
+  DESIGN_PATH                Top file, a directory containing it, or the RTL
+                             root directory. Optional when --top and --rtl
+                             are both given.
 
 Options:
   -f, --freq <MHZ>           Clock frequency in MHz, "500MHz" also works
                              (default: $DEFAULT_FREQ)
   -c, --clock <NAME>         Clock port name (default: $DEFAULT_CLK)
+  -t, --top <NAME>           Module to use as the synthesis top (default: the
+                             stem of DESIGN_PATH)
+  -r, --rtl <DIR>            Root directory recursively scanned for RTL
+                             sources (default: the directory of DESIGN_PATH)
   -o, --output <DIR>         Output directory (default: current directory)
   -h, --help                 Show this help and exit
 
@@ -29,10 +41,22 @@ Designs using SystemVerilog (.sv) are converted to Verilog via sv2v
 (required: https://github.com/zachjs/sv2v) before synthesis, because yosys
 cannot parse 'parameter type' or DPI-C declarations.
 
+NOTE: a module that exposes a SystemVerilog interface as a port (e.g.
+'decoupled_if', 'axi_if') cannot be used directly as --top, because sv2v
+refuses to convert an interface port on the top module. Wrap such a module in
+a plain-port module and analyze the wrapper instead.
+
 Examples:
   $0 path/to/top.v
   $0 --freq 250 --clock sys_clk --output build/ rtl/
   $0 rtl/                      # auto-detect the top module file
+
+  # STA for one module under vsrc/ (scan all of vsrc/, top = ifu)
+  $0 -f 300 -t ifu -r vsrc
+
+  # STA for a composite module built from several submodules (bpu pulls in
+  # bimodal/ubtb/gen_pc automatically)
+  $0 -f 500 -t bpu -r vsrc
 EOF
 }
 
@@ -40,6 +64,8 @@ CLK_FREQ_MHZ="${CLK_FREQ_MHZ:-}"
 CLK_PORT_NAME="${CLK_PORT_NAME:-}"
 O="${O:-$PWD}"
 DESIGN_PATH=""
+TOP_NAME="${TOP_NAME:-}"
+RTL_ROOT="${RTL_ROOT:-}"
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -71,6 +97,30 @@ while [[ $# -gt 0 ]]; do
         CLK_PORT_NAME="${1#*=}"
         shift
         ;;
+    -t | --top)
+        if [[ $# -lt 2 ]]; then
+            echo "Error: option '$1' requires an argument" >&2
+            exit 1
+        fi
+        TOP_NAME="$2"
+        shift 2
+        ;;
+    --top=*)
+        TOP_NAME="${1#*=}"
+        shift
+        ;;
+    -r | --rtl)
+        if [[ $# -lt 2 ]]; then
+            echo "Error: option '$1' requires an argument" >&2
+            exit 1
+        fi
+        RTL_ROOT="$2"
+        shift 2
+        ;;
+    --rtl=*)
+        RTL_ROOT="${1#*=}"
+        shift
+        ;;
     -o | --output)
         if [[ $# -lt 2 ]]; then
             echo "Error: option '$1' requires an argument" >&2
@@ -100,8 +150,8 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-if [[ -z "$DESIGN_PATH" ]]; then
-    echo "Error: DESIGN_PATH is required" >&2
+if [[ -z "$DESIGN_PATH" && -z "$RTL_ROOT" ]]; then
+    echo "Error: a DESIGN_PATH or --rtl <DIR> is required" >&2
     usage >&2
     exit 1
 fi
@@ -127,48 +177,90 @@ fi
 RTL_NAME=(-name '*.v' -o -name '*.sv')
 RTL_EXCLUDE=(
     -not -name '*_tb.v'
+    -not -name 'tb_*'
     -not -name '*netlist.v'
     -not -path '*/obj_dir/*'
+    -not -path '*/test/*'
     -not -path '*/*MHz*/*'
     -not -path '*/build/*'
 )
 
-# resolve DESIGN_PATH: accept a directory and auto-detect the top module file
-if [[ -d "$DESIGN_PATH" ]]; then
-    mapfile -t CANDIDATES < <(find "$DESIGN_PATH" -type f \( "${RTL_NAME[@]}" \) "${RTL_EXCLUDE[@]}" | sort)
-    if [[ -f "$DESIGN_PATH/top.v" || -f "$DESIGN_PATH/top.sv" ]]; then
-        DESIGN_PATH="$DESIGN_PATH/top.v"
-    elif [[ ${#CANDIDATES[@]} -eq 1 ]]; then
-        DESIGN_PATH="${CANDIDATES[0]}"
-    elif [[ ${#CANDIDATES[@]} -eq 0 ]]; then
-        echo "Error: no Verilog files found in '$DESIGN_PATH'" >&2
-        exit 1
-    else
-        echo "Error: multiple Verilog files found in '$DESIGN_PATH', specify the top file explicitly:" >&2
-        printf '  %s\n' "${CANDIDATES[@]}" >&2
+# resolve the RTL root: --rtl wins, otherwise fall back to DESIGN_PATH
+RTL_DIR=""
+if [[ -n "$RTL_ROOT" ]]; then
+    if [[ ! -d "$RTL_ROOT" ]]; then
+        echo "Error: --rtl '$RTL_ROOT' does not exist or is not a directory" >&2
         exit 1
     fi
-    echo "Auto-detected top module file: $DESIGN_PATH"
+    RTL_DIR=$(realpath "$RTL_ROOT")
 fi
 
-if [[ ! -f "$DESIGN_PATH" ]]; then
-    echo "Error: DESIGN_PATH '$DESIGN_PATH' does not exist or is not a file" >&2
+# resolve DESIGN_PATH: accept a file (its directory becomes the RTL root), a
+# directory (auto-detect the top file unless --top is given), or nothing when
+# --top and --rtl are supplied.
+TOP_V=""
+if [[ -n "$DESIGN_PATH" ]]; then
+    if [[ -d "$DESIGN_PATH" ]]; then
+        [[ -z "$RTL_DIR" ]] && RTL_DIR=$(realpath "$DESIGN_PATH")
+        if [[ -z "$TOP_NAME" ]]; then
+            mapfile -t CANDIDATES < <(find "$DESIGN_PATH" -type f \( "${RTL_NAME[@]}" \) "${RTL_EXCLUDE[@]}" | sort)
+            if [[ -f "$DESIGN_PATH/top.v" ]]; then
+                TOP_V=$(realpath "$DESIGN_PATH/top.v")
+            elif [[ -f "$DESIGN_PATH/top.sv" ]]; then
+                TOP_V=$(realpath "$DESIGN_PATH/top.sv")
+            elif [[ ${#CANDIDATES[@]} -eq 1 ]]; then
+                TOP_V=$(realpath "${CANDIDATES[0]}")
+            elif [[ ${#CANDIDATES[@]} -eq 0 ]]; then
+                echo "Error: no Verilog files found in '$DESIGN_PATH'" >&2
+                exit 1
+            else
+                echo "Error: multiple Verilog files found in '$DESIGN_PATH'; use --top <NAME> or specify the top file explicitly:" >&2
+                printf '  %s\n' "${CANDIDATES[@]}" >&2
+                exit 1
+            fi
+            echo "Auto-detected top module file: $TOP_V"
+        fi
+    elif [[ -f "$DESIGN_PATH" ]]; then
+        TOP_V=$(realpath "$DESIGN_PATH")
+        [[ -z "$RTL_DIR" ]] && RTL_DIR=$(dirname "$TOP_V")
+    else
+        echo "Error: DESIGN_PATH '$DESIGN_PATH' does not exist or is not a file/directory" >&2
+        exit 1
+    fi
+fi
+
+if [[ -z "$RTL_DIR" ]]; then
+    echo "Error: could not determine the RTL source directory; specify --rtl <DIR>" >&2
     exit 1
 fi
 
-DESIGN_PATH=$(realpath "$DESIGN_PATH")
+# determine the top module name
+if [[ -n "$TOP_NAME" ]]; then
+    DESIGN="$TOP_NAME"
+elif [[ -n "$TOP_V" ]]; then
+    DESIGN=$(basename "$TOP_V")
+    DESIGN="${DESIGN%.sv}"
+    DESIGN="${DESIGN%.v}"
+else
+    echo "Error: could not determine the top module; specify --top <NAME>" >&2
+    exit 1
+fi
+
 O=$(realpath -m "$O")
 mkdir -p "$O"
 
-DESIGN=$(basename "$DESIGN_PATH")
-DESIGN="${DESIGN%.sv}"
-DESIGN="${DESIGN%.v}"
-RTL_DIR=$(dirname "$DESIGN_PATH")
+# locate the file that defines the top module (diagnostic only)
+if [[ -z "$TOP_V" ]]; then
+    TOP_V=$(grep -rlE "^[[:space:]]*module[[:space:]]+$DESIGN\b" \
+        --include='*.v' --include='*.sv' "$RTL_DIR" 2>/dev/null | sort | head -n1 || true)
+fi
 
 mapfile -t RTL_FILE_ARRAY < <(find "$RTL_DIR" -type f \( "${RTL_NAME[@]}" \) "${RTL_EXCLUDE[@]}" | sort)
 RTL_FILES="${RTL_FILE_ARRAY[*]}"
 
-RTL_INC="$RTL_DIR/include"
+# include directory exposed to sv2v and yosys (empty -> yosys uses its default)
+RTL_INC=""
+[[ -d "$RTL_DIR/include" ]] && RTL_INC="$RTL_DIR/include"
 
 # --- convert SystemVerilog to Verilog via sv2v when the design uses .sv ---
 HAVE_SV=0
@@ -217,7 +309,7 @@ fi
 
 echo "=================== STA CONFIG ==================="
 echo "DESIGN          = $DESIGN"
-echo "TOP_V           = $DESIGN_PATH"
+echo "TOP_V           = ${TOP_V:-<auto: $DESIGN>}"
 echo "RTL_DIR         = $RTL_DIR"
 echo "RTL_FILES       = $RTL_FILES"
 echo "CLK_FREQ_MHZ    = $CLK_FREQ_MHZ"
@@ -232,6 +324,7 @@ make -C "$PROJ_DIR" sta \
     CLK_FREQ_MHZ="$CLK_FREQ_MHZ" \
     CLK_PORT_NAME="$CLK_PORT_NAME" \
     RTL_FILES="$RTL_FILES" \
+    RTL_INC="$RTL_INC" \
     YOSYS_KEEP=1 \
     -B
 

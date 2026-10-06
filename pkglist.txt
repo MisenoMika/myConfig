@@ -65,6 +65,7 @@ feishu-bin
 ffmpegthumbs
 filelight
 flatpak-kcm
+fprintd
 francis
 fzf
 gedit
@@ -280,6 +281,7 @@ nvme-cli
 obs-studio
 ocean-sound-theme
 okular
+open-orpheus-bin
 openssh
 os-prober
 oxygen
@@ -289,6 +291,7 @@ palapeli
 parley
 partitionmanager
 patchutils
+pavucontrol
 perf
 picmi
 pim-data-exporter
@@ -346,6 +349,7 @@ sshfs
 starship
 steam
 step
+strawberry
 sudo
 sv2v
 svgpart
@@ -376,6 +380,8 @@ wacomtablet
 wechat-bin
 wemeet-bin
 wget
+wine
+wine-mono
 wl-clipboard
 wqy-zenhei
 xclip
