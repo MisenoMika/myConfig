@@ -257,6 +257,7 @@ lokalize
 lolcat
 lsd
 lskat
+lynx
 man-db
 man-pages
 marble

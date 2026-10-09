@@ -274,6 +274,17 @@ if [[ -z "$TOP_V" ]]; then
 fi
 
 mapfile -t RTL_FILE_ARRAY < <(find "$RTL_DIR" -type f \( "${RTL_NAME[@]}" \) "${RTL_EXCLUDE[@]}" | sort)
+
+# if the top file was given explicitly and lives outside the scanned RTL root
+# (e.g. a hand-written wrapper), compile it too
+if [[ -n "$TOP_V" && -f "$TOP_V" ]]; then
+    _have_top=0
+    for f in "${RTL_FILE_ARRAY[@]}"; do
+        [[ "$f" == "$TOP_V" ]] && _have_top=1 && break
+    done
+    ((_have_top)) || RTL_FILE_ARRAY+=("$TOP_V")
+fi
+mapfile -t RTL_FILE_ARRAY < <(printf '%s\n' "${RTL_FILE_ARRAY[@]}" | sort)
 RTL_FILES="${RTL_FILE_ARRAY[*]}"
 
 # include directory exposed to sv2v and yosys (empty -> yosys uses its default)
