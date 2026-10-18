@@ -28,6 +28,7 @@ if [ -f ~/.api-key ]; then
     source ~/.api-key
 fi
 export MUNDUS_HOME=/home/blossilver/soc-competition/Mundus
+export ARES_HOME=/home/blossilver/soc-competition/ARES
 
 # >>> coursier install directory >>>
 export PATH="$PATH:/home/blossilver/.local/share/coursier/bin"

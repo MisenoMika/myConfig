@@ -1,3 +1,4 @@
+colord-kde
 feishu-bin
 flac1.3
 flac1.3-debug
@@ -6,8 +7,10 @@ go-musicfox-bin-debug
 google-chrome
 kazumi-bin
 kazumi-bin-debug
+kgamma
 kwin-effect-rounded-corners-git
 kwin-effect-rounded-corners-git-debug
+kwin-x11
 linuxqq
 litehtml0.9
 litehtml0.9-debug
@@ -17,12 +20,15 @@ ncurses5-compat-libs-debug
 open-orpheus-bin
 open-orpheus-bin-debug
 riscv32-gnu-toolchain-elf-bin
+riscv64-unknown-elf-binutils
+riscv64-unknown-elf-binutils-debug
 sv2v
 sv2v-debug
 v2rayn-bin
 ventoy-bin
 ventoy-bin-debug
 visual-studio-code-bin
+wacomtablet
 wechat-bin
 wemeet-bin
 yay-bin

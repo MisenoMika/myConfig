@@ -317,7 +317,6 @@ plasma-vault
 plasma-welcome
 plasma-workspace
 plasma-workspace-wallpapers
-plasma-x11-session
 plasma5support
 plasmatube
 plymouth-kcm
@@ -327,10 +326,12 @@ poxml
 print-manager
 qqc2-breeze-style
 qrca
+qt5-quickcontrols2
 qt5-wayland
 qt6-wayland
 quickshell
 riscv32-gnu-toolchain-elf-bin
+riscv64-elf-gcc
 riscv64-linux-gnu-gcc
 rocs
 rustup
@@ -377,6 +378,7 @@ verilator
 vim
 visual-studio-code-bin
 vulkan-headers
+w3m
 wacomtablet
 wechat-bin
 wemeet-bin

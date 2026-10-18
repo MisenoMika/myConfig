@@ -33,6 +33,9 @@ Options:
   -r, --rtl <DIR>            Root directory recursively scanned for RTL
                              sources (default: the directory of DESIGN_PATH)
   -o, --output <DIR>         Output directory (default: current directory)
+  -I, --inc <DIR>            Extra Verilog include directory (repeatable). Use
+                             this for the Kconfig-generated headers, e.g.
+                             --inc npc/configs/build/vsrc/include.
   -k, --keep                 Preserve every cell/wire (YOSYS_KEEP). Needed only
                              when the top has no primary outputs, otherwise the
                              netlist is empty. Off by default because it
@@ -43,7 +46,7 @@ Options:
   -h, --help                 Show this help and exit
 
 Environment variables (overridden by options): CLK_FREQ_MHZ, CLK_PORT_NAME, O,
-YOSYS_KEEP, PWR_REPORT
+YOSYS_KEEP, PWR_REPORT, RTL_INC (extra include dirs, colon-separated)
 
 Designs using SystemVerilog (.sv) are converted to Verilog via sv2v
 (required: https://github.com/zachjs/sv2v) before synthesis, because yosys
@@ -74,6 +77,7 @@ O="${O:-$PWD}"
 DESIGN_PATH=""
 TOP_NAME="${TOP_NAME:-}"
 RTL_ROOT="${RTL_ROOT:-}"
+RTL_INC="${RTL_INC:-}"
 YOSYS_KEEP="${YOSYS_KEEP:-0}"
 PWR_REPORT="${PWR_REPORT:-0}"
 
@@ -129,6 +133,18 @@ while [[ $# -gt 0 ]]; do
         ;;
     --rtl=*)
         RTL_ROOT="${1#*=}"
+        shift
+        ;;
+    -I | --inc)
+        if [[ $# -lt 2 ]]; then
+            echo "Error: option '$1' requires an argument" >&2
+            exit 1
+        fi
+        RTL_INC="${RTL_INC:+$RTL_INC:}$2"
+        shift 2
+        ;;
+    --inc=*)
+        RTL_INC="${RTL_INC:+$RTL_INC:}${1#*=}"
         shift
         ;;
     -k | --keep)
@@ -287,9 +303,32 @@ fi
 mapfile -t RTL_FILE_ARRAY < <(printf '%s\n' "${RTL_FILE_ARRAY[@]}" | sort)
 RTL_FILES="${RTL_FILE_ARRAY[*]}"
 
-# include directory exposed to sv2v and yosys (empty -> yosys uses its default)
+# include directories exposed to sv2v and yosys.  Besides the RTL root's own
+# include/ dir, auto-detect the Kconfig-generated npc header directory
+# (configs/build/vsrc/include holds autoconf.vh) so `include "autoconf.vh"
+# resolves without extra flags.  Extra dirs can be added with -I/--inc
+# (repeatable) or the colon-separated RTL_INC environment variable.
+declare -a RTL_INC_DIRS=()
+if [[ -n "$RTL_INC" ]]; then
+    IFS=':' read -r -a _rtl_inc_extra <<<"$RTL_INC"
+    RTL_INC_DIRS+=("${_rtl_inc_extra[@]}")
+fi
+[[ -d "$RTL_DIR/include" ]] && RTL_INC_DIRS+=("$RTL_DIR/include")
+[[ -d "$RTL_DIR/../configs/build/vsrc/include" ]] &&
+    RTL_INC_DIRS+=("$(realpath "$RTL_DIR/../configs/build/vsrc/include")")
+
+# drop empty/duplicate entries, preserving order
+declare -a _rtl_inc_seen=()
 RTL_INC=""
-[[ -d "$RTL_DIR/include" ]] && RTL_INC="$RTL_DIR/include"
+for _inc in "${RTL_INC_DIRS[@]}"; do
+    [[ -z "$_inc" ]] && continue
+    _dup=0
+    for _s in "${_rtl_inc_seen[@]}"; do [[ "$_s" == "$_inc" ]] && _dup=1 && break; done
+    ((_dup)) && continue
+    _rtl_inc_seen+=("$_inc")
+    RTL_INC="${RTL_INC:+$RTL_INC:}$_inc"
+done
+unset RTL_INC_DIRS _rtl_inc_seen _rtl_inc_extra _inc _s _dup
 
 # --- convert SystemVerilog to Verilog via sv2v when the design uses .sv ---
 HAVE_SV=0
@@ -325,13 +364,28 @@ if ((HAVE_SV)); then
     done
 
     SV2V_ARGS=(-w "$SV2V_OUT" --top="$DESIGN")
-    [[ -d "$RTL_INC" ]] && SV2V_ARGS+=(-I "$RTL_INC")
+    if [[ -n "$RTL_INC" ]]; then
+        IFS=':' read -r -a _sv2v_inc <<<"$RTL_INC"
+        for _inc in "${_sv2v_inc[@]}"; do
+            [[ -d "$_inc" ]] && SV2V_ARGS+=(-I "$_inc")
+        done
+        unset _sv2v_inc _inc
+    fi
 
     # packages first: they hold `define macros that other files may rely on
-    # (sv2v processes files in order, so e.g. npc_pkg.sv's TOURNAMENT_ON must be
-    # seen before tournament.sv).
+    # (sv2v processes files in order, so e.g. fe_pkg.sv's TAGE_ON must be seen
+    # before tage.sv / tage_pkg.sv).
+    #
+    # The base package fe_pkg.sv defines the CONFIG_* feature macros (TAGE_ON,
+    # TOURNAMENT_ON, ...), so it must be compiled before any package that is
+    # guarded by them.  A plain alphabetical sort would place
+    # frontend/bpu/direction/tage_pkg.sv before frontend/fe_pkg.sv ('b' < 'f'),
+    # leaving TAGE_ON undefined when tage_pkg.sv is read; tage.sv then imports a
+    # package that was never declared ("could not find package tage_pkg").
+    # Force the base package first, matching the order in npc/Makefile.
     mapfile -t SV2V_FILES < <(
-        find "$SV2V_SRC" -type f -name '*_pkg.sv' | sort
+        find "$SV2V_SRC" -type f -name 'fe_pkg.sv'
+        find "$SV2V_SRC" -type f -name '*_pkg.sv' ! -name 'fe_pkg.sv' | sort
         find "$SV2V_SRC" -type f \( -name '*.v' -o -name '*.sv' \) ! -name '*_pkg.sv' | sort
     )
     N_SRC=${#SV2V_FILES[@]}
@@ -346,6 +400,7 @@ echo "=================== STA CONFIG ==================="
 echo "DESIGN          = $DESIGN"
 echo "TOP_V           = ${TOP_V:-<auto: $DESIGN>}"
 echo "RTL_DIR         = $RTL_DIR"
+echo "RTL_INC         = $RTL_INC"
 echo "RTL_FILES       = $RTL_FILES"
 echo "CLK_FREQ_MHZ    = $CLK_FREQ_MHZ"
 echo "CLK_PORT_NAME   = $CLK_PORT_NAME"
