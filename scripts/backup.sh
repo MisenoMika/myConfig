@@ -43,6 +43,9 @@ rsync -a --delete \
 rsync -a --delete \
     ~/yosys-sta/run_syn.sh ~/myConfig/scripts/run_syn.sh
 
+rsync -a --delete \
+    ~/yosys-sta/scripts ~/myConfig/scripts/yosys-sta-scripts
+
 #rsync -a --delete \
 #  ~/.local/share/nvim \
 #  ~/myConfig/dotfiles/.local/share/nvim
